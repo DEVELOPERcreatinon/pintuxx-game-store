@@ -1,0 +1,49 @@
+<!-- templates/upload.html -->
+{% extends "base.html" %}
+
+{% block title %}Загрузить приложение{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <h2 class="mb-4">Загрузить новое приложение</h2>
+        
+        <form method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+            
+            <div class="mb-3">
+                <label for="name" class="form-label">Название приложения</label>
+                <input type="text" class="form-control" id="name" name="name" required minlength="2">
+            </div>
+            
+            <div class="mb-3">
+                <label for="description" class="form-label">Описание</label>
+                <textarea class="form-control" id="description" name="description" rows="3" required minlength="10"></textarea>
+            </div>
+            
+            <div class="mb-3">
+                <label for="price" class="form-label">Цена (₽)</label>
+                <input type="number" class="form-control" id="price" name="price" step="0.01" min="0" required>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">Иконка приложения (PNG)</label>
+                <div class="upload-btn btn btn-outline-secondary w-100">
+                    <input type="file" class="file-input" id="icon" name="icon" accept=".png" required>
+                    <label for="icon" class="d-block">Выберите файл</label>
+                </div>
+            </div>
+            
+            <div class="mb-4">
+                <label class="form-label">Файл приложения (ZIP)</label>
+                <div class="upload-btn btn btn-outline-secondary w-100">
+                    <input type="file" class="file-input" id="app_file" name="app_file" accept=".zip" required>
+                    <label for="app_file" class="d-block">Выберите файл</label>
+                </div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary w-100">Загрузить приложение</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

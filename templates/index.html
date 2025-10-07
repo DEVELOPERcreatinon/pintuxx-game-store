@@ -1,0 +1,32 @@
+<!-- templates/index.html -->
+{% extends "base.html" %}
+
+{% block title %}Главная{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Доступные приложения</h1>
+
+<div class="row">
+    {% for app in apps %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <img src="{{ url_for('static', filename='uploads/' + app.icon_path) }}" 
+                 class="card-img-top" alt="{{ app.name }}" style="height: 200px; object-fit: contain;">
+            <div class="card-body">
+                <h5 class="card-title">{{ app.name }}</h5>
+                <p class="card-text">{{ app.description }}</p>
+                <p class="fw-bold">{{ app.price }} ₽</p>
+            </div>
+            <div class="card-footer">
+                <a href="{{ url_for('app_details', app_id=app.id) }}" 
+                   class="btn btn-primary w-100">Подробнее</a>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="col-12">
+        <div class="alert alert-info">Приложения пока не добавлены</div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

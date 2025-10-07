@@ -1,0 +1,33 @@
+<!-- templates/review_form.html -->
+{% extends "base.html" %}
+
+{% block title %}Оставить отзыв{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <h2 class="mb-4">Отзыв о приложении "{{ app.name }}"</h2>
+        
+        <form method="POST">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+            
+            <div class="mb-3">
+                <label for="rating" class="form-label">Оценка (1-10)</label>
+                <input type="number" class="form-control" id="rating" 
+                       name="rating" min="1" max="10" required 
+                       value="{{ review.rating if review else '' }}">
+            </div>
+            
+            <div class="mb-3">
+                <label for="comment" class="form-label">Комментарий</label>
+                <textarea class="form-control" id="comment" name="comment" 
+                          rows="4">{{ review.comment if review else '' }}</textarea>
+            </div>
+            
+            <button type="submit" class="btn btn-primary w-100">
+                {{ 'Обновить' if review else 'Отправить' }}
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

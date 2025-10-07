@@ -1,0 +1,45 @@
+<!-- templates/transactions.html -->
+{% extends "base.html" %}
+
+{% block title %}Мои транзакции{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">История транзакций</h1>
+
+{% if transactions %}
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Дата</th>
+            <th>От кого</th>
+            <th>Кому</th>
+            <th>Сумма</th>
+            <th>Приложение</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for t in transactions %}
+        <tr>
+            <td>{{ t.transaction_date }}</td>
+            <td>{{ t.from_username or 'Система' }}</td>
+            <td>{{ t.to_username }}</td>
+            <td class="{{ 'text-success' if t.to_user_id == session.user_id else 'text-danger' }}">
+                {{ t.amount | round(2) }} ₽
+            </td>
+            <td>
+                {% if t.app_name %}
+                    <a href="{{ url_for('app_details', app_id=t.app_id) }}">{{ t.app_name }}</a>
+                {% else %}
+                    -
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<div class="alert alert-info">
+    У вас пока нет транзакций
+</div>
+{% endif %}
+{% endblock %}

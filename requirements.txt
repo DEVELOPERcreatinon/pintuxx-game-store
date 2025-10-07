@@ -1,0 +1,6 @@
+Flask==2.3.2
+Flask-Limiter==2.6.3
+Flask-Talisman==1.1.0
+argon2-cffi==21.3.0
+cryptography==41.0.3
+Werkzeug==2.3.7

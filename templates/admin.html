@@ -1,0 +1,189 @@
+<!-- templates/admin.html -->
+{% extends "base.html" %}
+
+{% block title %}Админ панель{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Административная панель</h1>
+
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card text-white bg-primary">
+            <div class="card-body">
+                <h5 class="card-title">Пользователи</h5>
+                <p class="card-text fs-3">{{ stats.user_count }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-success">
+            <div class="card-body">
+                <h5 class="card-title">Приложения</h5>
+                <p class="card-text fs-3">{{ stats.app_count }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-info">
+            <div class="card-body">
+                <h5 class="card-title">Транзакции</h5>
+                <p class="card-text fs-3">{{ stats.transaction_count }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-warning">
+            <div class="card-body">
+                <h5 class="card-title">Отзывы</h5>
+                <p class="card-text fs-3">{{ stats.review_count }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h4>Пользователи</h4>
+            </div>
+            <div class="card-body">
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Имя</th>
+                            <th>Баланс</th>
+                            <th>Приложений</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                        <tr>
+                            <td>{{ user.id }}</td>
+                            <td>{{ user.username }}</td>
+                            <td>{{ user.balance | round(2) }} ₽</td>
+                            <td>{{ user.app_count }}</td>
+                            <td>
+                                <form class="d-inline" method="POST" action="{{ url_for('update_balance') }}">
+                                    <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+                                    <input type="hidden" name="user_id" value="{{ user.id }}">
+                                    <div class="input-group input-group-sm">
+                                        <input type="number" step="0.01" min="0" class="form-control" 
+                                               name="balance" value="{{ user.balance | round(2) }}" style="width: 80px;">
+                                        <button type="submit" class="btn btn-sm btn-outline-secondary">✓</button>
+                                    </div>
+                                </form>
+                                {% if not user.is_admin or user.id != session.user_id %}
+                                <a href="{{ url_for('toggle_admin', user_id=user.id) }}" 
+                                   class="btn btn-sm {{ 'btn-danger' if user.is_admin else 'btn-primary' }}">
+                                    {{ 'Снять админа' if user.is_admin else 'Сделать админом' }}
+                                </a>
+                                <a href="{{ url_for('delete_user', user_id=user.id) }}" 
+                                   class="btn btn-sm btn-danger">Удалить</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h4>Приложения на проверке</h4>
+                <span class="badge bg-danger">{{ pending_apps | length }}</span>
+            </div>
+            <div class="card-body">
+                {% if pending_apps %}
+                <div class="list-group">
+                    {% for app in pending_apps %}
+                    <div class="list-group-item">
+                        <div class="d-flex justify-content-between">
+                            <h5>{{ app.name }}</h5>
+                            <small>{{ app.username }}</small>
+                        </div>
+                        <p>{{ app.description | truncate(100) }}</p>
+                        <div>
+                            <a href="{{ url_for('approve_app', app_id=app.id) }}" 
+                               class="btn btn-sm btn-success">Одобрить</a>
+                            <a href="{{ url_for('reject_app', app_id=app.id) }}" 
+                               class="btn btn-sm btn-danger">Отклонить</a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="alert alert-info">Нет приложений на проверке</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h4>Последние отзывы</h4>
+            </div>
+            <div class="card-body">
+                {% if recent_reviews %}
+                <div class="list-group">
+                    {% for review in recent_reviews %}
+                    <div class="list-group-item">
+                        <div class="d-flex justify-content-between">
+                            <strong>{{ review.username }}</strong>
+                            <span class="badge bg-primary">{{ review.rating }}/10</span>
+                        </div>
+                        <p>{{ review.comment | truncate(50) }}</p>
+                        <small>Для: <a href="{{ url_for('app_details', app_id=review.app_id) }}">{{ review.app_name }}</a></small>
+                        <div class="mt-2">
+                            <a href="{{ url_for('delete_review_admin', review_id=review.id) }}" 
+                               class="btn btn-sm btn-danger">Удалить</a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="alert alert-info">Нет отзывов</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h4>Последние транзакции</h4>
+            </div>
+            <div class="card-body">
+                {% if recent_transactions %}
+                <div class="list-group">
+                    {% for t in recent_transactions %}
+                    <div class="list-group-item">
+                        <div class="d-flex justify-content-between">
+                            <strong>{{ t.amount | round(2) }} ₽</strong>
+                            <small>{{ t.transaction_date }}</small>
+                        </div>
+                        <div>
+                            От: {{ t.from_username or 'Система' }} → Кому: {{ t.to_username }}
+                        </div>
+                        {% if t.app_name %}
+                        <small>Приложение: <a href="{{ url_for('app_details', app_id=t.app_id) }}">{{ t.app_name }}</a></small>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="alert alert-info">Нет транзакций</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

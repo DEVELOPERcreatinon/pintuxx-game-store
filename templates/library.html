@@ -1,0 +1,40 @@
+<!-- templates/library.html -->
+{% extends "base.html" %}
+
+{% block title %}Мои приложения{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Мои приложения</h1>
+
+{% if purchases %}
+<div class="row">
+    {% for purchase in purchases %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <img src="{{ url_for('static', filename='uploads/' + purchase.icon_path) }}" 
+                 class="card-img-top" alt="{{ purchase.name }}" style="height: 200px; object-fit: contain;">
+            <div class="card-body">
+                <h5 class="card-title">{{ purchase.name }}</h5>
+                <p class="card-text">Куплено: {{ purchase.purchase_date }}</p>
+                
+                {% if purchase.review_id %}
+                    <p class="text-success">Вы оставили отзыв</p>
+                {% else %}
+                    <a href="{{ url_for('add_review', app_id=purchase.app_id) }}" 
+                       class="btn btn-sm btn-outline-primary">Оставить отзыв</a>
+                {% endif %}
+            </div>
+            <div class="card-footer">
+                <a href="{{ url_for('app_details', app_id=purchase.app_id) }}" 
+                   class="btn btn-primary w-100">Подробнее</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="alert alert-info">
+    У вас пока нет купленных приложений
+</div>
+{% endif %}
+{% endblock %}
