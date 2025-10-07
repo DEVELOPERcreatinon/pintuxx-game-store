@@ -6,3 +6,25 @@ __pycache__/
 uploads/
 venv311/
 *.bat
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+.idea/
+*.iws
+*.iml
+*.ipr
+# Vim
+*.swp
+*.swo
+# Sublime Text
+*.sublime-*
