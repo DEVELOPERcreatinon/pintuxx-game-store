@@ -213,19 +213,29 @@ Authorization: Bearer {token}
 
 ```
 pintuxx-game-store/
-├── app.py                 # Основное приложение
-├── bank.db               # База данных SQLite
-├── security.log          # Логи безопасности
-├── .env                  # Переменные окружения
+├── app.py # Основное приложение
+├── bank.db # База данных SQLite (создастся автоматически)
+├── security.log # Логи безопасности (создастся автоматически)
+├── .env # Переменные окружения
+├── requirements.txt # Зависимости Python
 ├── static/
-│   ├── uploads/          # Загруженные файлы
-│   └── sitemap.xml       # Карта сайта
-└── templates/            # HTML шаблоны
-    ├── index.html        # Главная страница
-    ├── login.html        # Страница входа
-    ├── register.html     # Регистрация
-    ├── admin.html        # Админ-панель
-    └── ...               # Другие шаблоны
+│ ├── uploads/ # Загруженные файлы (иконки и zip-файлы приложений)
+│ ├── css/ # Стили CSS
+│ ├── js/ # JavaScript файлы
+│ └── sitemap.xml # Карта сайта
+└── templates/ # HTML шаблоны
+├── index.html # Главная страница
+├── login.html # Страница входа
+├── register.html # Регистрация
+├── upload.html # Загрузка приложения
+├── app.html # Страница приложения
+├── transactions.html # История транзакций
+├── library.html # Библиотека пользователя
+├── admin.html # Админ-панель
+├── review_form.html # Форма отзыва
+├── privacy.html # Политика конфиденциальности
+├── terms.html # Условия использования
+└── base.html # Базовый шаблон
 ```
 
 ## 🐛 ОБНАРУЖЕНИЕ И УСТРАНЕНИЕ НЕИСПРАВНОСТЕЙ
