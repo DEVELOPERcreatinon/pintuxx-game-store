@@ -8,6 +8,7 @@
 ![Downloads](https://img.shields.io/github/downloads/DEVELOPERcreatinon/pintuxx-game-store/total)
 ![Last Commit](https://img.shields.io/github/last-commit/DEVELOPERcreatinon/pintuxx-game-store)
 
+
 ## 🚨 ВАЖНОЕ ПРЕДУПРЕЖДЕНИЕ
 
 Данный проект является **УЧЕБНЫМ И ДЕМОНСТРАЦИОННЫМ**. Не используйте реальные платежные данные! Все транзакции фиктивные.
