@@ -5,7 +5,6 @@
 ![Status](https://img.shields.io/badge/Status-Active-brightgreen.svg)
 ![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)
 ![Platform](https://img.shields.io/badge/Platform-Linux%20%7C%20Windows-lightgrey.svg)
-![Downloads](https://img.shields.io/github/downloads/DEVELOPERcreatinon/pintuxx-game-store/total)
 ![Last Commit](https://img.shields.io/github/last-commit/DEVELOPERcreatinon/pintuxx-game-store)
 
 
